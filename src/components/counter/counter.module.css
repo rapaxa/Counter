@@ -1,0 +1,7 @@
+.wrapper {
+    display: flex;
+    color: #a0c1fb;
+}
+.active{
+    color:red;
+}

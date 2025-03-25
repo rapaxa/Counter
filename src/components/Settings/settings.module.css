@@ -1,0 +1,13 @@
+.wrapper {
+    height: 100%;
+    display: flex;
+    font-size: 1rem;
+    color: #a0c1fb;
+    flex-direction: column;
+    justify-content: space-evenly;
+    input{
+        width: 50%;
+        text-align: center;
+    }
+
+}
