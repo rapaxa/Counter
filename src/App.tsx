@@ -13,57 +13,84 @@ type ButtonProps = {
 }
 
 function App() {
-    const [sizeOfValue, setSizeOfValue] = useState({min: 1, max: 10});
+    const [sizeOfValue, setSizeOfValue] = useState({ min: 1, max: 10 });
     const [counter, setCounter] = useState(sizeOfValue.min);
-    const [isDisabled, setIsDisabled] = useState(false);
-    const [newValueOfSize, setNewValueOfSize] = useState({min: 10, max: 10});
+
+
+    const [isSetDisabled, setIsSetDisabled] = useState(false);
+    const [newValueOfSize, setNewValueOfSize] = useState({ min: 0, max: 10 });
+
+
     const handleIncrement = () => {
         if (counter < sizeOfValue.max) {
-            setCounter(counter + 1)
-        } else if (counter === sizeOfValue.max) {
-            buttons?.map(i => i.title === 'Inc' ? i.isDisabled = true : false);
-            console.log(buttons)
+            setCounter(counter + 1);
         }
+    };
 
-    }
     const handleDecrement = () => {
-        if (counter > sizeOfValue.min)
-            setCounter(counter - 1)
-    }
+        if (counter > sizeOfValue.min) {
+            setCounter(counter - 1);
+        }
+    };
+
     const handleReset = () => {
-        setCounter(sizeOfValue.min)
-    }
+        setCounter(sizeOfValue.min);
+    };
+
     const handleClick = () => {
         if (newValueOfSize.min < newValueOfSize.max) {
-            setSizeOfValue({min: newValueOfSize.min, max: newValueOfSize.max})
-            setCounter(newValueOfSize.min)
-            setIsDisabled(true)
+            setSizeOfValue({ ...newValueOfSize });
+            setCounter(newValueOfSize.min);
+            setIsSetDisabled(true); // блокируем кнопку Set
         } else {
-            console.log("Max < Min")
+            console.log("Max должен быть больше Min");
         }
+    };
 
-    }
-    const buttons: ButtonProps[] = [
-        {id: '1', isDisabled: false, title: "Inc", click: handleIncrement},
-        {id: '2', isDisabled: false, title: "Dec", click: handleDecrement},
-        {id: '3', isDisabled: false, title: "Res", click: handleReset}
+    const counterButtons: ButtonProps[] = [
+        {
+            id: '1',
+            title: "Inc",
+            isDisabled: counter >= sizeOfValue.max,
+            click: handleIncrement
+        },
+        {
+            id: '2',
+            title: "Dec",
+            isDisabled: counter <= sizeOfValue.min,
+            click: handleDecrement
+        },
+        {
+            id: '3',
+            title: "Res",
+            isDisabled: false,
+            click: handleReset
+        }
     ];
-    const btnOfSettings: ButtonProps[] = [{id: '4', isDisabled: isDisabled, title: 'Set', click: handleClick}];
 
+    const settingsButton: ButtonProps[] = [
+        {
+            id: '4',
+            title: 'Set',
+            isDisabled: isSetDisabled,
+            click: handleClick
+        }
+    ];
 
     return (
-        <div style={{display: "flex"}}>
-            <Container buttons={btnOfSettings}>
+        <div style={{ display: "flex" }}>
+            <Container buttons={settingsButton}>
                 <Settings
                     size={newValueOfSize}
-                    isDisabled={setIsDisabled}
-                    onChangeSize={setNewValueOfSize}/>
+                    onSetDisabled={setIsSetDisabled}
+                    onChangeSize={setNewValueOfSize}
+                />
             </Container>
-            <Container buttons={buttons}>
-                <Counter size={sizeOfValue} value={counter}/>
+            <Container buttons={counterButtons}>
+                <Counter size={sizeOfValue} value={counter} />
             </Container>
         </div>
-    )
+    );
 }
 
-export default App
+export default App;
