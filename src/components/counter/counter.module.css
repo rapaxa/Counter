@@ -1,7 +1,11 @@
 .wrapper {
     display: flex;
     color: #a0c1fb;
+    font-size: 18px;
 }
 .active{
+    color:red;
+}
+.error{
     color:red;
 }

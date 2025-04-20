@@ -25,7 +25,6 @@ export const Container = ({children, buttons}: ContainerProps) => {
                 {buttons?.map(i =>
                     <Button isDisabled={i.isDisabled} key={i.title} title={i.title} click={i.click}/>
                 )}
-
             </div>
         </div>
     )
