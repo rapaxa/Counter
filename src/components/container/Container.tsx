@@ -1,6 +1,6 @@
 import s from './container.module.css'
 import {ReactNode} from "react";
-import {Button} from "../Button/Button.tsx";
+import {Button} from "../button/Button.tsx";
 
 type ButtonProps = {
     id: string,

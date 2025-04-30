@@ -1,8 +1,12 @@
 import './App.css';
 import {Container} from "./components/container/Container.tsx";
-import {Settings} from "./components/Settings/Settings.tsx";
+import {Settings} from "./components/settings/Settings.tsx";
 import {Counter} from "./components/counter/Counter.tsx";
 import {useState} from "react";
+
+import {useAppSelector} from "./common/hooks/useAppSelector.ts";
+import {useAppDispatch} from "./common/hooks/useAppDispatch.ts";
+import {decrement, increment} from "./model/counter-reducer.ts";
 
 type Size = { min: number; max: number };
 
@@ -19,13 +23,15 @@ const getFromLocalStorage = <T, >(key: string, fallback: T): T => {
 };
 
 function App() {
+    const dispatch = useAppDispatch();
     const initialSize = getFromLocalStorage<Size>('size', {min: 0, max: 10});
-    const initialCounter = getFromLocalStorage<number>('counter', initialSize.min);
+    // const initialCounter = getFromLocalStorage<number>('counter', initialSize.min);
     const initialIsEdit = getFromLocalStorage<boolean>('isEdit', true);
     const initialIsDisabled = getFromLocalStorage<boolean>('isDisabled', false);
 
     const [sizeOfValue, setSizeOfValue] = useState(initialSize);
-    const [counter, setCounter] = useState(initialCounter);
+    // const [counter, setCounter] = useState(initialCounter);
+    const counter = useAppSelector(state => state.counter.value);
     const [newValueOfSize, setNewValueOfSize] = useState(initialSize);
     const [errorMessage, setErrorMessage] = useState(false);
     const [isEdit, setIsEdit] = useState(initialIsEdit);
@@ -40,23 +46,25 @@ function App() {
 
     const handleIncrement = () => {
         if (counter < sizeOfValue.max) {
-            const newValue = counter + 1;
-            setCounter(newValue);
-            localStorage.setItem('counter', JSON.stringify(newValue));
+            // const newValue = counter + 1;
+            // setCounter(newValue);
+            dispatch(increment())
+            // localStorage.setItem('counter', JSON.stringify(newValue));
         }
     };
 
     const handleDecrement = () => {
         if (counter > sizeOfValue.min) {
-            const newValue = counter - 1;
-            setCounter(newValue);
-            localStorage.setItem('counter', JSON.stringify(newValue));
+            // const newValue = counter - 1;
+            // setCounter(newValue);
+            dispatch(decrement())
+            // localStorage.setItem('counter', JSON.stringify(newValue));
         }
     };
 
     const handleReset = () => {
-        setCounter(sizeOfValue.min);
-        localStorage.setItem('counter', JSON.stringify(sizeOfValue.min));
+        // setCounter(sizeOfValue.min);
+        // localStorage.setItem('counter', JSON.stringify(sizeOfValue.min));
     };
 
     const handleSetClick = () => {
@@ -64,7 +72,7 @@ function App() {
         setErrorMessage(false);
         setIsEdit(false);
         setSizeOfValue({...newValueOfSize});
-        setCounter(newValueOfSize.min);
+        // setCounter(newValueOfSize.min);
         saveToLocalStorage(newValueOfSize, newValueOfSize.min, false, true);
     };
 
